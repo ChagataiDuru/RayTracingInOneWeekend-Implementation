@@ -156,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="color.h" />
     <ClInclude Include="hittable.h" />
+    <ClInclude Include="hittable_list.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="rt.h" />
     <ClInclude Include="sphere.h" />
