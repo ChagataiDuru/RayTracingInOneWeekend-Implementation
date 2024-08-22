@@ -6,7 +6,7 @@
 #include <limits>
 #include <memory>
 #include <random>
-
+#include "SDL.h"
 // C++ Std Usings
 
 using std::make_shared;
