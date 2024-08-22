@@ -26,7 +26,14 @@ inline double degrees_to_radians(double degrees) {
 
 class RandomGenerator {
 public:
-    RandomGenerator() : rng(std::random_device{}()), dist(0.0, 1.0) {}
+
+    RandomGenerator(const RandomGenerator&) = delete;
+    RandomGenerator& operator=(const RandomGenerator&) = delete;
+
+    static RandomGenerator& instance() {
+        static RandomGenerator instance;
+        return instance;
+    }
 
     double random_double() {
         return dist(rng);
@@ -38,10 +45,12 @@ public:
     }
 
 private:
+
+    RandomGenerator() : rng(std::random_device{}()), dist(0.0, 1.0) {}
+
     std::mt19937 rng;
     std::uniform_real_distribution<double> dist;
 };
-
 // Common Headers
 
 #include "color.h"

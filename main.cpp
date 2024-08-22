@@ -47,6 +47,8 @@ int main(int argc, char* argv[]) {
     camera cam;
     cam.aspect_ratio = 16.0 / 9.0;
     cam.image_width = image_width;
+    cam.samples_per_pixel = 4;
+    cam.max_depth = 50;
 
     std::vector<uint8_t> pixels(image_width * image_height * 3);
 
