@@ -84,7 +84,7 @@ private:
         pixel_delta_v = viewport_v / image_height;
 
         // Calculate the location of the upper left pixel.
-        auto viewport_upper_left = center - (focus_dist * w) - viewport_u / 2 - viewport_v / 2;
+        auto viewport_upper_left = center - (focus_dist * w) - viewport_u/2 - viewport_v/2;
         pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
         // Calculate the camera defocus disk basis vectors.
@@ -132,6 +132,12 @@ private:
         // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit square.
         return vec3(RandomGenerator::instance().random_double() - 0.5, RandomGenerator::instance().random_double() - 0.5, 0);
     }
+    
+    point3 defocus_disk_sample() const {
+        // Returns a random point in the camera defocus disk.
+        auto p = random_in_unit_disk();
+        return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
+    }
 
     inline double linear_to_gamma(double linear_component)
     {
@@ -139,12 +145,6 @@ private:
             return std::sqrt(linear_component);
 
         return 0;
-    }
-
-    point3 defocus_disk_sample() const {
-        // Returns a random point in the camera defocus disk.
-        auto p = random_in_unit_disk();
-        return center + (p[0] * defocus_disk_u) + (p[1] * defocus_disk_v);
     }
 
 };
