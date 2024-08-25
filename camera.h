@@ -4,6 +4,7 @@
 #include "rt.h"
 
 #include "hittable.h"
+#include "material.h"
 
 class camera {
 public:
@@ -23,6 +24,9 @@ public:
                     pixel_color += ray_color(r, max_depth, world);
                 }
                 int index = (j * image_width + i) * 3;
+
+                // Gamma correction
+                pixel_color = color(linear_to_gamma(pixel_color.x()), linear_to_gamma(pixel_color.y()), linear_to_gamma(pixel_color.z()));
 
                 pixels[index] = std::clamp((int)(255.999 * pixel_color.x() * pixel_samples_scale), 0, 255);
                 pixels[index + 1] = std::clamp((int)(255.999 * pixel_color.y() * pixel_samples_scale), 0, 255);
@@ -74,8 +78,11 @@ private:
         hit_record rec;
 
         if (world.hit(r, interval(0.001, infinity), rec)) {
-            vec3 direction = rec.normal + random_unit_vector();
-            return 0.5 * ray_color(ray(rec.p, direction), depth - 1, world);
+            ray scattered;
+            color attenuation;
+            if (rec.mat->scatter(r, rec, attenuation, scattered))
+                return attenuation * ray_color(scattered, depth - 1, world);
+            return color(0, 0, 0);
         }
 
         vec3 unit_direction = unit_vector(r.direction());
@@ -103,6 +110,15 @@ private:
         // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit square.
         return vec3(RandomGenerator::instance().random_double() - 0.5, RandomGenerator::instance().random_double() - 0.5, 0);
     }
+
+    inline double linear_to_gamma(double linear_component)
+    {
+        if (linear_component > 0)
+            return std::sqrt(linear_component);
+
+        return 0;
+    }
+
 };
 
 #endif

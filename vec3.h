@@ -40,6 +40,12 @@ public:
         return data[0] * data[0] + data[1] * data[1] + data[2] * data[2];
     }
 
+    bool near_zero() const {
+        // Return true if the vector is close to zero in all dimensions.
+        auto s = 1e-8;
+        return (std::fabs(data[0]) < s) && (std::fabs(data[1]) < s) && (std::fabs(data[2]) < s);
+    }
+
     static vec3 random() {
         return vec3(RandomGenerator::instance().random_double(), RandomGenerator::instance().random_double(), RandomGenerator::instance().random_double());
     }
@@ -114,6 +120,10 @@ inline vec3 random_on_hemisphere(const vec3& normal) {
         return on_unit_sphere;
     else
         return -on_unit_sphere;
+}
+
+inline vec3 reflect(const vec3& v, const vec3& n) {
+    return v - 2 * dot(v, n) * n;
 }
 
 #endif // VEC3_H
