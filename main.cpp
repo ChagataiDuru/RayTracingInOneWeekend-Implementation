@@ -68,6 +68,9 @@ int main(int argc, char* argv[]) {
     cam.lookat = point3(0, 0, -1);
     cam.vup = vec3(0, 1, 0);
 
+    cam.defocus_angle = 0.6;
+    cam.focus_dist = 10.0;
+
     std::vector<uint8_t> pixels(image_width * image_height * 3);
 
     cam.render(world, pixels.data());
