@@ -159,6 +159,7 @@
     <ClInclude Include="hittable_list.h" />
     <ClInclude Include="interval.h" />
     <ClInclude Include="material.h" />
+    <ClInclude Include="obj_loader.h" />
     <ClInclude Include="ray.h" />
     <ClInclude Include="rt.h" />
     <ClInclude Include="sphere.h" />
